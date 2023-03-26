@@ -4,10 +4,6 @@
 
   <artifactId>mavenTaskSubModule</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <properties>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-  </properties>
   <packaging>jar</packaging>
 
   <name>mavenTaskSubModule</name>
@@ -17,7 +13,6 @@
     <artifactId>MavenTask</artifactId>
     <groupId>ru.urfu</groupId>
     <version>1.0-SNAPSHOT</version>
-    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <dependencies>

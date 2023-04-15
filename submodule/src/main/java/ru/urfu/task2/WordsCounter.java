@@ -32,8 +32,8 @@ public class WordsCounter
         this.fileName = fileName;
         wordsCount = new HashMap<>();
 
-        maxTop = new PriorityQueue<>((a, b) -> a.getRight() - b.getRight());
-        minTop = new PriorityQueue<>((a, b) -> b.getRight() - a.getRight());
+        maxTop = new PriorityQueue<>((a, b) -> b.getRight() - a.getRight());
+        minTop = new PriorityQueue<>((a, b) -> a.getRight() - b.getRight());
     }
 
     /**
@@ -42,10 +42,14 @@ public class WordsCounter
      * Считает наиболее встречаемые слова
      * Считает наименее встречаемые слова
      *
-     * Сложность O(n + 2*n*log(n)) n - считывание всех символов, преобразовние их в слова и подсчет количества раз, сколько слово встретилось
+     * Сложность O(n + 38*n) = O(39*n) n - считывание всех символов, преобразовние их в слова и подсчет количества раз, сколько слово встретилось
      * Подсчет количества делается за O(1) - т.к. работаем с HashSet, где основные операции O(1).
-     * После итерируемся по всем словам и засовываем их в очередь с приоритетом для наиболее и наименее встречаюшихся слов = n * 2 * log(n)
-     * Добавление в очередь с приоритетом(O(log(n)))
+     * После итерируемся по всем словам и засовываем их в очередь с приоритетом для наиболее и наименее встречаюшихся слов = O (n * ( 2 * (4 + 11 + 4) ) )=
+     * O( 38(n) )
+     * Добавление в очередь с приоритетом(O(4 + 11 + 4)): добавление в очередь с приоритетом работает за log(n), удаление тоже
+     * После добавление элемента, мы проверяем их количество, если оно больше 10, тогда мы добираемся до последнего элемента и удаляем его,
+     * из этого следует, что в очереди всегда будет <= 11 элементов, соответство добавление O(log(11)) = 4, удаление (log(11)) = 4
+     * Итерация до последнего элемента O(n), но т.к. в очереди <= 11 элементов, то O(11)
      */
     public void readWords()
     {
@@ -57,8 +61,8 @@ public class WordsCounter
 
             wordsCount.keySet().stream().forEach(k -> {
                 Pair<String, Integer> p = Pair.of(k, wordsCount.get(k));
-                maxTop.add(p);
-                minTop.add(p);
+                addToTopMax(p);
+                addToTopMin(p);
             });
 
         }
@@ -70,7 +74,7 @@ public class WordsCounter
 
     /**
      * Функция принимает строку считанную из файла и парсит её на слова(сложность O(n))
-     * @param line - строка из файла
+     * @param line строка из файла
      * @return коллекция слов
      */
     private Collection<String> parseLineToWords(String line)
@@ -119,8 +123,8 @@ public class WordsCounter
 
     /**
      * Получение списко 10 наименее/наиболее используемых слов (вынес в отдельный метод из-за дублирования)
-     * @param queue - очередь с наиболее{@link WordsCounter#maxTop}/наименее{@link WordsCounter#minTop} используемыми словами
-     * @return - список
+     * @param queue очередь с наиболее{@link WordsCounter#maxTop}/наименее{@link WordsCounter#minTop} используемыми словами
+     * @return список
      */
     private List<String> getTop(Queue<Pair<String, Integer>> queue)
     {
@@ -133,5 +137,47 @@ public class WordsCounter
         }
 
         return result;
+    }
+
+    /**
+     * Добавление элемента в очередь 10 самых используемых слов
+     * @param element пара, где 1ый элемент - слово, 2ой - количество раз, сколько слово встретилось
+     */
+    private void addToTopMax(Pair<String, Integer> element)
+    {
+        addToTop(maxTop, element);
+    }
+
+    /**
+     * Добавление элемента в очередь 10 наименее используемых слов
+     * @param element пара, где 1ый элемент - слово, 2ой - количество раз, сколько слово встретилось
+     */
+    private void addToTopMin(Pair<String, Integer> element)
+    {
+        addToTop(minTop, element);
+    }
+
+    /**
+     * Добавление элемента в очередь, либо наиболее встречаемых слов, либо наименее встречаемых слов
+     * Вынес функционал в общий метод, из-за дублирования
+     * @param queue очередь наиболее встречаемых слов, либо очередь наименее встречаемых слов
+     * @param element пара, где 1ый элемент - слово, 2ой - количество раз, сколько слово встретилось
+     */
+    private void addToTop(Queue<Pair<String, Integer>> queue, Pair<String, Integer> element)
+    {
+        queue.add(element);
+
+        if(queue.size() > 10)
+        {
+            Iterator<Pair<String, Integer>> it = queue.iterator();
+            Pair<String, Integer> elementToDelete = it.next();
+
+            while(it.hasNext())
+            {
+                elementToDelete = it.next();
+            }
+
+            queue.remove(elementToDelete);
+        }
     }
 }

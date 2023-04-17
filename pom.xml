@@ -13,15 +13,15 @@
   <name>MavenTask</name>
   <url>http://maven.apache.org</url>
 
-  <properties>
-    <commons-lang3.version>3.12.0</commons-lang3.version>
-    <commons-collections4.version>4.4</commons-collections4.version>
-    <commons-io.version>2.11.0</commons-io.version>
-    <junit.version>3.8.2</junit.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.targer>17</maven.compiler.targer>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <commons-collections4.version>4.4</commons-collections4.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <junit.version>4.13.2</junit.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
   <dependencyManagement>
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * DTO класс пользователя
+ * Пользователь
  */
 public class User
 {
@@ -46,22 +46,6 @@ public class User
     {
         return passwordHash;
     }
-
-    public void setPasswordHash(byte[] passwordHash)
-    {
-        this.passwordHash = passwordHash;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
-    }
-
 
     @Override
     public boolean equals(Object o)
